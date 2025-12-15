@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tetris
+  namespace: application-web
+  labels:
+    app: tetris
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tetris
+      role: tetris
+  template:
+    metadata:
+      labels:
+        app: tetris
+        role: tetris
+    spec:
+      containers:
+      - name: tetris
+        image: lrakai/tetris:hostname
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tetris
+  namespace: application-web
+  labels:
+    app: tetris
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  type: ClusterIP
+  selector:
+    app: tetris
+    role: tetris
